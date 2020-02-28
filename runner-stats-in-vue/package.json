@@ -10,7 +10,8 @@
   "dependencies": {
     "core-js": "^3.6.4",
     "vue": "^2.6.11",
-    "axios": "0.19.2"
+    "axios": "0.19.2",
+    "moment": "2.24.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",

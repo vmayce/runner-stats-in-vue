@@ -1,6 +1,7 @@
 # runner-stats-in-vue
 
-# Following the Vue CLI Initial Setup
+This is a simple web app written in Vue that takes a tab delimited text file and shows some basic stats in a fun way to see which US city you could run to and how long it would take based on your running stats.
+
 ## Project setup
 ```
 npm install

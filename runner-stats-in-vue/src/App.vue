@@ -1,8 +1,8 @@
 <template>
     <div id="app">
-        <NavBar />
+        <NavBar :years="years" />
         <FileUpload @updateFileUpload="updateRunningData" />
-        <CalculatedDistance :fileData="runningData" jsonFileName="distance.json" />
+        <CalculatedDistance :fileData="runningData" :jsonFileName="distanceJsonFile" :yearFilter="selectedYear" :monthFilter="selectedMonth" />
 
     </div>
 </template>
@@ -11,6 +11,8 @@
     import NavBar from './components/navigation/NavBar.vue'
     import FileUpload from './components/inputs/FileUpload.vue'
     import CalculatedDistance from './components/CalculatedDistance.vue'
+    import { EventBus } from './eventbus.js';
+
 
     export default {
         name: 'App',
@@ -21,7 +23,15 @@
         },
         data: function () {
             return {
-                runningData: null
+                runningData: null,
+                distanceJsonFile: 'distance.json',
+
+                years: [{ id: null, text: 'All Years' }],
+                selectedYear: null,
+                selectedMonth: null,
+
+                step1_uploadFile: true,
+                step2_viewResults: false
             }
         },
         methods: {
@@ -29,6 +39,17 @@
                 console.log("update running data" + e)
                 this.runningData = e;
             }
+
+        },
+        mounted: function () {
+            // Listen for the event and its payload.
+            EventBus.$on('month-selected-changed', val => {
+                this.selectedMonth = val.id;
+            });
+             EventBus.$on('year-selected-changed', val => {
+                 this.selectedYear = val.id;
+            });
+
         }
     }
 </script>
