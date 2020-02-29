@@ -36,7 +36,6 @@
         },
         methods: {
             updateRunningData(e) {
-                console.log("update running data" + e)
                 this.runningData = e;
             }
 

@@ -6,8 +6,21 @@
         <h1>Original Data</h1>
         {{fileData}}
         <h1>Filtered Data</h1>
-        {{filteredData}}
+        {{filteredFileData}}
         <h1>hello</h1>
+
+        <h1>From {{minDate | formatDate}} to {{maxDate | formatDate}} </h1>
+        <h2>Total Distance Run</h2>
+        <h1>{{milesTraveled | toFixedPoint}} miles</h1>
+
+        <h2>Total Calories Burned</h2>
+        <h1>{{caloriesTotal}} calories</h1>
+
+        <h2>Best Pace</h2>
+        <h1>{{minPace}}</h1>
+
+        <h2>Time to Travel</h2>
+        <h1>{{timeToTravel  | toFixedPoint}} hours</h1>
     </div>
 </template>
 
@@ -27,23 +40,25 @@
             return {
                 file: this.jsonFileName,
                 jsonDistance: null,
-                milesTraveled: 0,
-                timeToTravel: 0
+                filteredFileData: [],
+                milesTraveled: 0.0,
+                timeToTravel: 0.0,
+                caloriesTotal: 0,
+                minPace: '99:99',
+                dates: [],
+                minDate: '',
+                maxDate: ''
             }
         },
-        computed: {
-            filteredData: function () {
-                if (this.fileData === null && this.fileData < 1) {
-                    return [];
-                }
-                var _yearFilter = this.yearFilter;
-                var _monthFilter = this.monthFilter;
-                return this.fileData.filter(function (run) {
-                    var _testDate = moment(run.date);
-
-                    return (_testDate.year() === _yearFilter || _yearFilter === null)
-                        && (_testDate.month() === _monthFilter || _monthFilter === null);
-                });
+        watch: {
+            fileData: function () {
+                this.filterData();
+            },
+            yearFilter: function () {
+                this.filterData();
+            },
+            monthFilter: function () {
+                this.filterData();
             }
         },
         methods: {
@@ -56,13 +71,113 @@
                         throw error.response.data;
                     });
             },
-            getTotalDistanceTraveled: function () {
+            filterData: function () {
+                if (this.fileData === null && this.fileData < 1) {
+                    return [];
+                }
+                var _yearFilter = this.yearFilter;
+                var _monthFilter = this.monthFilter;
+                this.filteredFileData = this.fileData.filter(function (run) {
+                    var _testDate = moment(run.date);
 
+                    return (_testDate.year() === _yearFilter || _yearFilter === null)
+                        && (_testDate.month() === _monthFilter || _monthFilter === null);
+                });
+
+                this.getResultStats();
+            },
+
+            getResultStats: function () {
+
+                this.setDefaults();
+
+                var timeRegex = '[0-9]{1,}:[0-5][0-9]:[0-5][0-9]$';
+                var paceRegex = '[0-9]?[0-9]:[0-9]{2}$';
+
+                var _milesTotal = 0;
+                var _timeTotal = 0;
+                var _calorieTotal = 0;
+                var _minPace = '99:99';
+                var _filteredFileData = this.filteredFileData;
+                for (var i = 0; i < _filteredFileData.length; i++) {
+
+                    var _date = moment(_filteredFileData[i].date);
+                    this.dates.push(_date)
+                   
+
+                    var _distance = Number.parseFloat(_filteredFileData[i].distance)
+                    _milesTotal += Number.isNaN(_distance) ? 0 : _distance;
+
+                    if ((_filteredFileData[i].time) != null) {
+                        console.log((_filteredFileData[i].time))
+                        if ((_filteredFileData[i].time).match(timeRegex)) {
+                            var time = (_filteredFileData[i].time).split(':');
+                            console.log(time)
+                            _timeTotal += (Number.parseInt(time[0]) * 3600) + (Number.parseInt(time[1]) * 60) + Number.parseInt(time[2]) // convert to seconds and add together
+                        }
+
+                    }
+                    var _calories = Number.parseInt(_filteredFileData[i].calories)
+                    _calorieTotal += Number.isNaN(_calories) ? 0 : _calories;
+
+                    var _avgPace = (_filteredFileData[i]['avg pace']);
+
+                    _minPace = this.checkMinTime(_minPace, _avgPace, paceRegex);
+                }
+
+                this.milesTraveled = _milesTotal;
+                this.timeToTravel = _timeTotal / 3600;
+                this.caloriesTotal = _calorieTotal;
+                this.minPace = _minPace
+
+                 
+                    this.minDate = moment.min(this.dates);
+                this.maxDate = moment.max(this.dates);
+            },
+            setDefaults: function () {
+                this.dates = [];
+                this.milesTraveled = 0;
+                this.timeToTravel = 0;
+                this.caloriesTotal = 0;
+                this.minPace = '99:99';
+            },
+            checkMinTime: function (min, test, regex) {
+                
+                if (test != null) {
+                    
+                    if (test.match(regex)) {
+                        var testSplit = test.split(':');
+                        var minSplit = min.split(':');
+
+                        if (minSplit[0] < testSplit[0]) {
+                            return min;
+                        }
+
+                        if (minSplit[0] === testSplit[0] && minSplit[1] < testSplit[1]) {
+                            return min;
+                        }
+
+                        return test;
+                    }
+                }
+                return min;
             }
 
+
+        },
+        filters: {
+            toFixedPoint: function (val) {
+                if (Number.isNaN(Number.parseFloat(val))) { return ''; }
+
+                return val.toFixed(2)
+            },
+            formatDate: function (val) {
+                return moment(val).format('LL')
+            }
         },
         mounted: function () {
             this.getJsonFile();
+            this.filterData();
         }
     }
 
