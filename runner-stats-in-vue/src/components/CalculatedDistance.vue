@@ -29,6 +29,7 @@
 </template>
 
 <script>
+    import { EventBus } from './../eventbus.js';
     import axios from 'axios';
     import moment from 'moment';
 
@@ -57,6 +58,7 @@
         watch: {
             fileData: function () {
                 this.filterData();
+                this.findYears();
             },
             yearFilter: function () {
                 this.filterData();
@@ -107,7 +109,7 @@
 
                     var _date = moment(_filteredFileData[i].date);
                     this.dates.push(_date)
-                   
+
 
                     var _distance = Number.parseFloat(_filteredFileData[i].distance)
                     _milesTotal += Number.isNaN(_distance) ? 0 : _distance;
@@ -133,8 +135,8 @@
                 this.caloriesTotal = _calorieTotal;
                 this.minPace = _minPace
 
-                 
-                    this.minDate = moment.min(this.dates);
+
+                this.minDate = moment.min(this.dates);
                 this.maxDate = moment.max(this.dates);
             },
             setDefaults: function () {
@@ -145,9 +147,9 @@
                 this.minPace = '99:99';
             },
             checkMinTime: function (min, test, regex) {
-                
+
                 if (test != null) {
-                    
+
                     if (test.match(regex)) {
                         var testSplit = test.split(':');
                         var minSplit = min.split(':');
@@ -164,8 +166,26 @@
                     }
                 }
                 return min;
-            }
+            },
+            findYears: function () {
+                var _dates = [];
+                for (var i = 0; i < this.fileData.length; i++) {
 
+                    var _date = moment(this.fileData[i].date);
+                    _dates.push(_date)
+                }
+
+                var _minYear = moment.min(this.dates).year();
+                var _maxYear = moment.max(this.dates).year();
+
+                var yearsArray = [];
+
+                for (var y = _minYear; y <= _maxYear; y++) {
+                    yearsArray.push({ id: y, text: y.toString() });
+                }
+
+                EventBus.$emit('years-dropdown-update', yearsArray);
+            }
 
         },
         filters: {
@@ -180,6 +200,7 @@
         },
         mounted: function () {
             this.getJsonFile();
+            this.findYears();
             this.filterData();
         }
     }

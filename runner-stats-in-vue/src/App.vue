@@ -50,6 +50,11 @@
             });
              EventBus.$on('year-selected-changed', val => {
                  this.selectedYear = val.id;
+             });
+
+             EventBus.$on('years-dropdown-update', val => {
+                 this.years = val;
+                   this.years.unshift({ id: null, text: 'All Years' });
             });
         }
     }
