@@ -4,6 +4,7 @@
         <FileUpload @updateFileUpload="updateRunningData" />
         <CalculatedDistance :fileData="runningData" :jsonFileName="distanceJsonFile" :yearFilter="selectedYear" :monthFilter="selectedMonth" />
         <DisplayDataModal :dataArray="runningData" />
+        <RandomMapLocation  />
     </div>
 </template>
 
@@ -13,7 +14,7 @@
     import FileUpload from './components/inputs/FileUpload.vue'
     import CalculatedDistance from './components/CalculatedDistance.vue'
     import DisplayDataModal from './components/ui/DisplayDataModal.vue'
-    
+    import RandomMapLocation from './components/ui/RandomMap.vue'
 
 
     export default {
@@ -22,7 +23,8 @@
             NavBar,
             FileUpload,
             CalculatedDistance,
-            DisplayDataModal
+            DisplayDataModal,
+            RandomMapLocation
         },
         data: function () {
             return {

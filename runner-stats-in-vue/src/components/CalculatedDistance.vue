@@ -135,6 +135,7 @@
                 this.caloriesTotal = _calorieTotal;
                 this.minPace = _minPace
 
+                EventBus.$emit('get-distance-changed', this.milesTraveled);           
 
                 this.minDate = moment.min(this.dates);
                 this.maxDate = moment.max(this.dates);
@@ -169,22 +170,24 @@
             },
             findYears: function () {
                 var _dates = [];
-                for (var i = 0; i < this.fileData.length; i++) {
+                if (this.fileData != null) {
+                    for (var i = 0; i < this.fileData.length; i++) {
 
-                    var _date = moment(this.fileData[i].date);
-                    _dates.push(_date)
+                        var _date = moment(this.fileData[i].date);
+                        _dates.push(_date)
+                    }
+
+                    var _minYear = moment.min(this.dates).year();
+                    var _maxYear = moment.max(this.dates).year();
+
+                    var yearsArray = [];
+
+                    for (var y = _minYear; y <= _maxYear; y++) {
+                        yearsArray.push({ id: y, text: y.toString() });
+                    }
+
+                    EventBus.$emit('years-dropdown-update', yearsArray);
                 }
-
-                var _minYear = moment.min(this.dates).year();
-                var _maxYear = moment.max(this.dates).year();
-
-                var yearsArray = [];
-
-                for (var y = _minYear; y <= _maxYear; y++) {
-                    yearsArray.push({ id: y, text: y.toString() });
-                }
-
-                EventBus.$emit('years-dropdown-update', yearsArray);
             }
 
         },

@@ -12,7 +12,10 @@
     "vue": "^2.6.11",
     "axios": "0.19.2",
     "moment": "2.24.0",
-    "v-click-outside": "3.0.1"
+    "v-click-outside": "3.0.1",
+    "random-location": "1.1.2",
+    "leaflet": "1.6.0",
+    "xml-js": "1.6.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",
