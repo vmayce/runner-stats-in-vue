@@ -3,6 +3,10 @@
         <p v-for="(item, idx) in jsonDistance" :key="idx">
             {{item.crow_flies}}
         </p>
+
+
+
+
         <h1>Original Data</h1>
         {{fileData}}
         <h1>Filtered Data</h1>
@@ -109,10 +113,9 @@
                     _milesTotal += Number.isNaN(_distance) ? 0 : _distance;
 
                     if ((_filteredFileData[i].time) != null) {
-                        console.log((_filteredFileData[i].time))
+
                         if ((_filteredFileData[i].time).match(timeRegex)) {
                             var time = (_filteredFileData[i].time).split(':');
-                            console.log(time)
                             _timeTotal += (Number.parseInt(time[0]) * 3600) + (Number.parseInt(time[1]) * 60) + Number.parseInt(time[2]) // convert to seconds and add together
                         }
 

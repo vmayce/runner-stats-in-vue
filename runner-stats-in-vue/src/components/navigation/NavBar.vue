@@ -1,7 +1,7 @@
 <template>
     <div class="navbar">
         <V-Button>Upload New Data</V-Button>
-        <V-Button>View Uploaded Data</V-Button>
+        <ReuploadDataButton>View Uploaded Data</ReuploadDataButton>
 
         <DropDown :emitEventName="yearSelectedEmitted" :options="years" :selectedOption="selectedYear"></DropDown>
         <DropDown :emitEventName="monthSelectedEmitted" :options="months" :selectedOption="selectedMonth"></DropDown>
@@ -10,12 +10,14 @@
 
 <script>
     import Button from '../../components/ui/Button.vue'
+    import ReuploadDataButton from '../../components/ui/ReuploadDataButton.vue'
     import DropDown from '../../components/inputs/DropDown.vue'
 
     export default {
         name: 'NavBar',
         components: {
             'V-Button': Button,
+            ReuploadDataButton,
             DropDown
         },
         props: {

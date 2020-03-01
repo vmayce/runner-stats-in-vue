@@ -3,15 +3,17 @@
         <NavBar :years="years" />
         <FileUpload @updateFileUpload="updateRunningData" />
         <CalculatedDistance :fileData="runningData" :jsonFileName="distanceJsonFile" :yearFilter="selectedYear" :monthFilter="selectedMonth" />
-
+        <DisplayDataModal :dataArray="runningData" />
     </div>
 </template>
 
 <script>
+    import { EventBus } from './eventbus.js';
     import NavBar from './components/navigation/NavBar.vue'
     import FileUpload from './components/inputs/FileUpload.vue'
     import CalculatedDistance from './components/CalculatedDistance.vue'
-    import { EventBus } from './eventbus.js';
+    import DisplayDataModal from './components/ui/DisplayDataModal.vue'
+    
 
 
     export default {
@@ -19,7 +21,8 @@
         components: {
             NavBar,
             FileUpload,
-            CalculatedDistance
+            CalculatedDistance,
+            DisplayDataModal
         },
         data: function () {
             return {
@@ -29,7 +32,7 @@
                 years: [{ id: null, text: 'All Years' }],
                 selectedYear: null,
                 selectedMonth: null,
-
+                
                 step1_uploadFile: true,
                 step2_viewResults: false
             }
@@ -48,7 +51,6 @@
              EventBus.$on('year-selected-changed', val => {
                  this.selectedYear = val.id;
             });
-
         }
     }
 </script>

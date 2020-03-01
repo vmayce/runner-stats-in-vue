@@ -6,9 +6,10 @@
 
 
 <script>
-export default {
+    export default {
         name: 'Button'
-}</script>
+    }
+</script>
 
 
 <style scoped>
