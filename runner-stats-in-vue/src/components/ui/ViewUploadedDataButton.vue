@@ -12,7 +12,7 @@
         name: 'ReuploadDataButton',
         methods: {
             emitGlobalClickEvent() {
-                EventBus.$emit('reupload-data-clicked', true);
+                EventBus.$emit('show-uploaded-data', true);
 
             }
         },

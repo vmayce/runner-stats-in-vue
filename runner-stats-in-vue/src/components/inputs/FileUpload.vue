@@ -3,7 +3,9 @@
 
 <template>
     <div class="input">
-        <input type="file" @change="readSingleFile" />
+        <transition name="fade">
+            <input v-if="show" type="file" @change="readSingleFile" />
+        </transition>
     </div>
 </template>
 
@@ -17,7 +19,9 @@
             return {
                 expectedHeaders: ["date", "distance", "time", "avg pace", "calories"],
                 headersDict: { "date": null, "distance": null, "time": null, "avg pace": null, "calories": null },
-                runningData: []
+                runningData: [],
+
+                show: false
             }
         },
         methods: {
@@ -35,7 +39,7 @@
                 };
                 reader.readAsText(file);
             },
-            
+
             pushToJson: function (contents) {
                 if (contents.length == 0) {
                     //error
@@ -54,7 +58,7 @@
                     for (var i = 0; i < testForHeaders.length; i++) {
                         var item = testForHeaders[i].toLowerCase().trim();
 
-                        if (headers.includes(item)) {    
+                        if (headers.includes(item)) {
                             thisHeadersDict[item] = i
                         }
                     }
@@ -65,7 +69,7 @@
 
                 this.runningData = [];
                 var runningData = this.runningData;
-                
+
                 //as long as there are other lines
                 if (contentData.length > 1) {
                     for (var j = 1; j < contentData.length; j++) {
@@ -86,6 +90,9 @@
             setHeadersDictToDefaults: function () {
                 this.headersDict = { "date": null, "distance": null, "time": null, "avg pace": null, "calories": null };
             }
+        },
+        mounted: function () {
+            this.show = !this.show
         }
     }
 
@@ -95,5 +102,13 @@
 <style scoped>
     input {
         font-size: 2em;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity 1s;
+    }
+
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
     }
 </style>

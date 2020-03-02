@@ -1,12 +1,6 @@
 <template>
     <div class="hello">
-        <p v-for="(item, idx) in jsonDistance" :key="idx">
-            {{item.crow_flies}}
-        </p>
-
-
-
-
+      
         <h1>Original Data</h1>
         {{fileData}}
         <h1>Filtered Data</h1>
@@ -30,21 +24,20 @@
 
 <script>
     import { EventBus } from './../eventbus.js';
-    import axios from 'axios';
+    //import axios from 'axios';
     import moment from 'moment';
 
     export default {
         name: 'CalculatedDistance',
         props: {
-            jsonFileName: String,
             fileData: Array,
             yearFilter: Number,
             monthFilter: Number
         },
         data: function () {
             return {
-                file: this.jsonFileName,
-                jsonDistance: null,
+
+               // jsonDistance: null,
                 filteredFileData: [],
                 milesTraveled: 0.0,
                 timeToTravel: 0.0,
@@ -68,15 +61,15 @@
             }
         },
         methods: {
-            getJsonFile: function () {
-                axios.get('data/' + this.file, { baseURL: window.location.origin })
-                    .then((response) => {
-                        this.jsonDistance = response.data;
-                    })
-                    .catch((error) => {
-                        throw error.response.data;
-                    });
-            },
+            //getJsonFile: function () {
+            //    axios.get('data/' + this.file, { baseURL: window.location.origin })
+            //        .then((response) => {
+            //            this.jsonDistance = response.data;
+            //        })
+            //        .catch((error) => {
+            //            throw error.response.data;
+            //        });
+            //},
             filterData: function () {
                 if (this.fileData === null && this.fileData < 1) {
                     return [];
@@ -176,9 +169,10 @@
                         var _date = moment(this.fileData[i].date);
                         _dates.push(_date)
                     }
-
-                    var _minYear = moment.min(this.dates).year();
-                    var _maxYear = moment.max(this.dates).year();
+                    console.log(_dates)
+                    
+                    var _minYear = moment.min(_dates).year();
+                    var _maxYear = moment.max(_dates).year();
 
                     var yearsArray = [];
 
@@ -186,6 +180,7 @@
                         yearsArray.push({ id: y, text: y.toString() });
                     }
 
+                    console.log(yearsArray)
                     EventBus.$emit('years-dropdown-update', yearsArray);
                 }
             }
@@ -202,7 +197,6 @@
             }
         },
         mounted: function () {
-            this.getJsonFile();
             this.findYears();
             this.filterData();
         }
