@@ -62,13 +62,13 @@
                 this.mapView.fitBounds(polyline.getBounds().pad(0.5));
             },
             getRandomLocation: function () {
-                // Twitter HQ
+                // Kansas, center of the US
                 const P = {
-                    latitude: 37.7768006,
-                    longitude: -122.4187928
+                    latitude: 39.381266,
+                    longitude: -97.922211
                 }
 
-                const randomDist = Math.random(2000);
+                const randomDist = Math.random(10000);
 
                 const R = this.distance * 1609.34 // meters
 

@@ -4,14 +4,25 @@
 <template>
     <div class="input">
         <transition name="fade">
-            <input v-if="show" type="file" @change="readSingleFile" />
+            <div v-if="show">
+                <input type="file" @change="readSingleFile" />
+
+                <V-Button  @click.native="getTestData">View With Test Data</V-Button>
+            </div>
         </transition>
     </div>
 </template>
 
 <script>
+
+    import Button from '../../components/ui/Button.vue'
+    import axios from 'axios';
+
     export default {
         name: 'FileUpload',
+        components: {
+            'V-Button': Button
+        },
         props: {
             //none at this time
         },
@@ -89,6 +100,16 @@
             },
             setHeadersDictToDefaults: function () {
                 this.headersDict = { "date": null, "distance": null, "time": null, "avg pace": null, "calories": null };
+            },
+            getTestData: function () {
+                axios.get('data/testdata.txt', { baseURL: window.location.origin })
+                    .then((response) => {
+                        this.pushToJson(response.data);
+                    })
+                    .catch((error) => {
+                        throw error.response.data;
+                    });
+
             }
         },
         mounted: function () {

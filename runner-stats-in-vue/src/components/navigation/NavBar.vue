@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import Button from '../../components/ui/Button.vue'
+
     import ViewUploadedDataButton from '../../components/ui/ViewUploadedDataButton.vue'
     import ReuploadDataButton from '../../components/ui/ReuploadDataButton.vue'
     import DropDown from '../../components/inputs/DropDown.vue'
@@ -17,7 +17,6 @@
     export default {
         name: 'NavBar',
         components: {
-            'V-Button': Button,
             ViewUploadedDataButton,
             ReuploadDataButton,
             DropDown
