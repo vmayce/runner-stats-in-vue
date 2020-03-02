@@ -1,5 +1,5 @@
 <template>
-    <button class="Button" v-on:click="emitGlobalClickEvent">
+    <button class="button" v-on:click="emitGlobalClickEvent">
         <slot>Button</slot>
     </button>
 </template>
@@ -21,4 +21,7 @@
 
 
 <style scoped>
+    .button {
+    background-color: #DE9E36;
+    }
 </style>

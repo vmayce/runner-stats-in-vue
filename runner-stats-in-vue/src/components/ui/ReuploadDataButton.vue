@@ -22,9 +22,5 @@
 
 <style scoped>
 
-    .button {
-    border-radius: 15px;
-    background-color: "#37323E";
-    
-    }
+
 </style>
