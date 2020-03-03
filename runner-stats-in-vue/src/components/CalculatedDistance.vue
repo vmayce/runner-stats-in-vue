@@ -1,19 +1,31 @@
 <template>
-    <div class="hello">
-      
+    <div class="calculated">
+        <div class="calculated-group">
+            <div>
+                <h1>Total<br/>Distance Run</h1>
+                <h2>{{milesTraveled | toFixedPoint}} miles</h2>
+                <h1>From {{minDate | formatDate}} to {{maxDate | formatDate}} </h1>
+            </div>
+        </div>
 
-        <h1>From {{minDate | formatDate}} to {{maxDate | formatDate}} </h1>
-        <h2>Total Distance Run</h2>
-        <h1>{{milesTraveled | toFixedPoint}} miles</h1>
+        <div class="calculated-group">
+            <div>
+                <h1>Total<br/>Calories Burned</h1>
+                <h2>{{caloriesTotal}} calories</h2>
+            </div>
+        </div>
 
-        <h2>Total Calories Burned</h2>
-        <h1>{{caloriesTotal}} calories</h1>
+        <div class="calculated-group">
+            <div>
+                <h1>Best<br/>Pace</h1>
+                <h2>{{minPace}}</h2>
+            </div>
+        </div>
 
-        <h2>Best Pace</h2>
-        <h1>{{minPace}}</h1>
-
-        <h2>Time to Travel</h2>
-        <h1>{{timeToTravel  | toFixedPoint}} hours</h1>
+        <!--<div class="">
+            <h1>Time to Travel</h1>
+            <h2>{{timeToTravel  | toFixedPoint}} hours</h2>
+        </div>-->
     </div>
 </template>
 
@@ -32,7 +44,7 @@
         data: function () {
             return {
 
-               // jsonDistance: null,
+                // jsonDistance: null,
                 filteredFileData: [],
                 milesTraveled: 0.0,
                 timeToTravel: 0.0,
@@ -47,7 +59,7 @@
             fileData: function () {
                 this.findYears();
                 this.filterData();
-                
+
             },
             yearFilter: function () {
                 this.filterData();
@@ -89,7 +101,7 @@
 
                     var _date = moment(_filteredFileData[i].date);
 
-                     if (_date.isValid()) {
+                    if (_date.isValid()) {
                         this.dates.push(_date)
                     }
 
@@ -117,7 +129,7 @@
                 this.caloriesTotal = _calorieTotal;
                 this.minPace = _minPace
 
-                EventBus.$emit('get-distance-changed', this.milesTraveled);           
+                EventBus.$emit('get-distance-changed', this.milesTraveled);
 
                 this.minDate = moment.min(this.dates);
                 this.maxDate = moment.max(this.dates);
@@ -157,7 +169,7 @@
 
                         var _date = moment(this.fileData[i].date);
                         if (_date.isValid()) {
-                        _dates.push(_date)
+                            _dates.push(_date)
                         }
                     }
 
@@ -166,7 +178,7 @@
 
                     var yearsArray = [];
 
-                    for (var y = _minYear; y <= _maxYear; y++) {
+                    for (var y = _maxYear; y >= _minYear; y--) {
                         yearsArray.push({ id: y, text: y.toString() });
                     }
 
@@ -196,22 +208,35 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-    h3 {
-        margin: 40px 0 0;
+    h1 {
+        font-size: 1.45em;
     }
 
-    ul {
-        list-style-type: none;
-        padding: 0;
+    h2 {
+        font-size: 3em;
     }
 
-    li {
+    .calculated {
+        margin-top: 70px;
+        width: 90%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .calculated-group {
+        flex-grow: 1;
+        display: flex;
         display: inline-block;
-        margin: 0 10px;
+        margin: 0;
+        text-align: center;
     }
 
-    a {
-        color: #42b983;
-    }
+        .calculated-group div {
+            text-align: left;
+            display: inline-block;
+        }
 </style>

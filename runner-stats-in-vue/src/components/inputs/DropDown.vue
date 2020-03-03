@@ -41,12 +41,12 @@
 <style scoped>
     select {
         /* remove the tiny arrow */
-        margin: 0;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
         -webkit-appearance: none;
         -moz-appearance: none;
+
     }
 
         select:active,

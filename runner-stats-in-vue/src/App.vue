@@ -1,10 +1,18 @@
 <template>
     <div id="app">
         <NavBar :years="years" v-if="step2_viewResults" />
-        <FileUpload @updateFileUpload="updateRunningData" v-if="step1_uploadFile" />
-        <CalculatedDistance :fileData="runningData" :yearFilter="selectedYear" :monthFilter="selectedMonth" v-if="step2_viewResults" />
-        <DisplayDataModal :dataArray="runningData" v-if="step2_viewResults" />
-        <RandomMapLocation v-if="step2_viewResults" />
+        <main>
+            <FileUpload @updateFileUpload="updateRunningData" v-if="step1_uploadFile" />
+            <CalculatedDistance :fileData="runningData" :yearFilter="selectedYear" :monthFilter="selectedMonth" v-if="step2_viewResults" />
+            <DisplayDataModal :dataArray="runningData" v-if="step2_viewResults" />
+
+            <div v-if="step2_viewResults" class="green-running-img">
+
+            </div>
+            <!--<img src="assets/img/filip-mroz-sgtxFOiBZmQ-unsplash.png" />-->
+            <RandomMapLocation v-if="step2_viewResults" />
+
+        </main>
     </div>
 </template>
 
@@ -84,4 +92,10 @@
         color: #2c3e50;
         margin-top: 60px;
     }
+    main {
+        width: 75%;
+        margin: auto;
+    }
+
+    
 </style>
