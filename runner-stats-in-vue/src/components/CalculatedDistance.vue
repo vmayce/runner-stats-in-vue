@@ -1,11 +1,6 @@
 <template>
     <div class="hello">
       
-        <h1>Original Data</h1>
-        {{fileData}}
-        <h1>Filtered Data</h1>
-        {{filteredFileData}}
-        <h1>hello</h1>
 
         <h1>From {{minDate | formatDate}} to {{maxDate | formatDate}} </h1>
         <h2>Total Distance Run</h2>
@@ -50,8 +45,9 @@
         },
         watch: {
             fileData: function () {
-                this.filterData();
                 this.findYears();
+                this.filterData();
+                
             },
             yearFilter: function () {
                 this.filterData();
@@ -61,15 +57,6 @@
             }
         },
         methods: {
-            //getJsonFile: function () {
-            //    axios.get('data/' + this.file, { baseURL: window.location.origin })
-            //        .then((response) => {
-            //            this.jsonDistance = response.data;
-            //        })
-            //        .catch((error) => {
-            //            throw error.response.data;
-            //        });
-            //},
             filterData: function () {
                 if (this.fileData === null && this.fileData < 1) {
                     return [];
@@ -101,8 +88,10 @@
                 for (var i = 0; i < _filteredFileData.length; i++) {
 
                     var _date = moment(_filteredFileData[i].date);
-                    this.dates.push(_date)
 
+                     if (_date.isValid()) {
+                        this.dates.push(_date)
+                    }
 
                     var _distance = Number.parseFloat(_filteredFileData[i].distance)
                     _milesTotal += Number.isNaN(_distance) ? 0 : _distance;
@@ -167,10 +156,11 @@
                     for (var i = 0; i < this.fileData.length; i++) {
 
                         var _date = moment(this.fileData[i].date);
+                        if (_date.isValid()) {
                         _dates.push(_date)
+                        }
                     }
-                    console.log(_dates)
-                    
+
                     var _minYear = moment.min(_dates).year();
                     var _maxYear = moment.max(_dates).year();
 
@@ -180,7 +170,6 @@
                         yearsArray.push({ id: y, text: y.toString() });
                     }
 
-                    console.log(yearsArray)
                     EventBus.$emit('years-dropdown-update', yearsArray);
                 }
             }

@@ -22,44 +22,53 @@
                 randomDestination: null,
                 randomDestinationName: '',
                 randomDestinationObject: null,
+                randomDestinationMarker: null,
 
                 randomStart: null,
                 randomStartName: '',
                 randomStartObject: null,
+                randomStartMarker: null,
+
+                polyline: null,
 
                 mapView: null
             }
         },
         methods: {
+
             createMap: function () {
 
-                if (this.mapView != null) {
-                    this.mapView.remove();
+                if (this.mapView == null) {
+                    this.mapView = L.map('mapid').setView(this.randomDestination, 13);
                 }
-
-                this.mapView = L.map('mapid').setView(this.randomDestination, 13);
+                else {
+                    this.mapView.removeLayer(this.randomDestinationMarker);
+                    this.mapView.removeLayer(this.randomStartMarker);
+                    this.mapView.removeLayer(this.polyline);
+                }
 
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 }).addTo(this.mapView);
 
-                L.marker(this.randomDestination).addTo(this.mapView)
+                this.randomDestinationMarker = L.marker(this.randomDestination).addTo(this.mapView)
                     .bindPopup('You could have ended up all the way over here!');
 
 
-                L.marker(this.randomStart).addTo(this.mapView)
+                this.randomStartMarker = L.marker(this.randomStart).addTo(this.mapView)
                     .bindPopup('If you start here...')
                     .openPopup();
 
-                
+
                 // create a red polyline from an array of LatLng points
                 var latlngs = [
                     this.randomStart,
                     this.randomDestination
                 ];
-                var polyline = L.polyline(latlngs, { color: 'red' }).addTo(this.mapView);
+                this.polyline = L.polyline(latlngs, { color: 'red' }).addTo(this.mapView);
                 // zoom the map to the polyline
-                this.mapView.fitBounds(polyline.getBounds().pad(0.5));
+                this.mapView.fitBounds(this.polyline.getBounds().pad(0.5));
+
             },
             getRandomLocation: function () {
                 // Kansas, center of the US
@@ -68,7 +77,7 @@
                     longitude: -97.922211
                 }
 
-                const randomDist = Math.random(10000);
+                const randomDist = Math.random(5000)  * 1609.34 // meters;
 
                 const R = this.distance * 1609.34 // meters
 
@@ -81,42 +90,42 @@
             },
             //getCity: async function (latitude, longitude) {
 
-                //TODO: Move this to Node.js backend server.
-                //Per the policy of usage, the referer / user-agent must be set which cannot be done in
-                //  the javascript frontend.
+            //TODO: Move this to Node.js backend server.
+            //Per the policy of usage, the referer / user-agent must be set which cannot be done in
+            //  the javascript frontend.
 
-                //await this.sleep(5000)
+            //await this.sleep(5000)
 
-                ////https://www.beyondjava.net/how-to-use-reverse-geolocation-of-openstreetmap
-                //var options = {
-                //    url: 'https://nominatim.openstreetmap.org/reverse?format=xml&lat=' + latitude + '&lon=' + longitude + '&zoom=18&addressdetails=1',
-                //    method: 'get'
-                //}
+            ////https://www.beyondjava.net/how-to-use-reverse-geolocation-of-openstreetmap
+            //var options = {
+            //    url: 'https://nominatim.openstreetmap.org/reverse?format=xml&lat=' + latitude + '&lon=' + longitude + '&zoom=18&addressdetails=1',
+            //    method: 'get'
+            //}
 
-                //return axios(options)
-                //    .then(function (response) {
+            //return axios(options)
+            //    .then(function (response) {
 
-                //        var body = response.data;
+            //        var body = response.data;
 
-                //        const result1 = convert.xml2json(body, { compact: true, spaces: 4 });
-                //        const geo = JSON.parse(result1);
+            //        const result1 = convert.xml2json(body, { compact: true, spaces: 4 });
+            //        const geo = JSON.parse(result1);
 
-                //        if (geo.reversegeocode.addressparts.town) {
-                //            return (geo.reversegeocode.addressparts.town._text);
-                //        } else if (geo.reversegeocode.addressparts.city) {
-                //            return (geo.reversegeocode.addressparts.city._text);
-                //        } else if (geo.reversegeocode.addressparts.village) {
-                //            return (geo.reversegeocode.addressparts.village._text);
-                //        } else if (geo.reversegeocode.addressparts.hamlet) {
-                //            return (geo.reversegeocode.addressparts.hamlet._text);
-                //        } else {
-                //            console.log("An error occurred - couldn't find the address of the GPS coordinates");
-                //            console.log(geo.reversegeocode.addressparts);
-                //            return "";
-                //        }
+            //        if (geo.reversegeocode.addressparts.town) {
+            //            return (geo.reversegeocode.addressparts.town._text);
+            //        } else if (geo.reversegeocode.addressparts.city) {
+            //            return (geo.reversegeocode.addressparts.city._text);
+            //        } else if (geo.reversegeocode.addressparts.village) {
+            //            return (geo.reversegeocode.addressparts.village._text);
+            //        } else if (geo.reversegeocode.addressparts.hamlet) {
+            //            return (geo.reversegeocode.addressparts.hamlet._text);
+            //        } else {
+            //            console.log("An error occurred - couldn't find the address of the GPS coordinates");
+            //            console.log(geo.reversegeocode.addressparts);
+            //            return "";
+            //        }
 
-                //    });
-                //https://operations.osmfoundation.org/policies/nominatim/
+            //    });
+            //https://operations.osmfoundation.org/policies/nominatim/
 
             //},
             sleep: function (ms) {
@@ -133,7 +142,6 @@
             });
 
 
-            //this.randomDestinationName = this.getCity(37, -122);
         }
     }
 </script>

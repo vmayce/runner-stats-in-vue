@@ -102,9 +102,12 @@
                 this.headersDict = { "date": null, "distance": null, "time": null, "avg pace": null, "calories": null };
             },
             getTestData: function () {
+
+                var jso = this.pushToJson;
                 axios.get('data/testdata.txt', { baseURL: window.location.origin })
                     .then((response) => {
-                        this.pushToJson(response.data);
+                        jso(response.data); 
+                        
                     })
                     .catch((error) => {
                         throw error.response.data;

@@ -1,11 +1,14 @@
 <template>
-    <div class="navbar">
-        <ReuploadDataButton>Upload New Data</ReuploadDataButton>
-        <ViewUploadedDataButton>View Uploaded Data</ViewUploadedDataButton>
+    <nav class="navbar">
+        <div class="nav-left">
+            <ReuploadDataButton>Upload New Data</ReuploadDataButton>
+            <ViewUploadedDataButton>View Uploaded Data</ViewUploadedDataButton>
+        </div><div class="nav-right">
+            <DropDown :emitEventName="yearSelectedEmitted" :options="years" :selectedOption="selectedYear"></DropDown>
+            <DropDown :emitEventName="monthSelectedEmitted" :options="months" :selectedOption="selectedMonth"></DropDown>
 
-        <DropDown :emitEventName="yearSelectedEmitted" :options="years" :selectedOption="selectedYear"></DropDown>
-        <DropDown :emitEventName="monthSelectedEmitted" :options="months" :selectedOption="selectedMonth"></DropDown>
-    </div>
+        </div>
+    </nav>
 </template>
 
 <script>
@@ -53,9 +56,20 @@
 
 <style scoped>
     nav {
-        width: 100%;
+        width: 75%;
+        margin: auto;
         height: 40px;
         text-align: left;
         position: relative;
+    }
+    .nav-left,
+    .nav-right {
+        display:inline-block;
+    }
+    .nav-left{
+        float: left;
+    }
+    .nav-right {
+    float:right;
     }
 </style>
