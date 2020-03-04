@@ -34,6 +34,12 @@
                 mapView: null
             }
         },
+        watch: {
+            distance: function () {
+                this.getRandomLocation();
+                this.createMap();
+            }
+        },
         methods: {
 
             createMap: function () {
@@ -77,8 +83,9 @@
                     longitude: -97.922211
                 }
 
-                const randomDist = Math.random(5000) * 1609.34 // meters;
+                const randomDist = (Math.random(1500) + 1000) * 1609.34 // meters;
 
+                console.log(randomDist);
                 const R = this.distance * 1609.34 // meters
 
                 this.randomStartObject = RandomLocation.randomCircumferencePoint(P, randomDist)
@@ -133,7 +140,7 @@
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
         },
-        mounted: function () {
+        created: function () {
             EventBus.$on('get-distance-changed', val => {
                 this.distance = val;
 
@@ -154,7 +161,7 @@
 
     #mapid {
         height: 300px;
-        width: 50%;
+        width: 60%;
     }
 </style>
 
