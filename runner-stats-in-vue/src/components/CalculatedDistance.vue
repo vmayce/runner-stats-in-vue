@@ -22,10 +22,10 @@
             </div>
         </div>
 
-        <!--<div class="">
+        <div class="time-to-travel">
             <h1>Time to Travel</h1>
             <h2>{{timeToTravel  | toFixedPoint}} hours</h2>
-        </div>-->
+        </div>
     </div>
 </template>
 
@@ -217,7 +217,8 @@
     }
 
     .calculated {
-        margin-top: 70px;
+        margin-top: 100px;
+        position: relative;
         width: 90%;
         display: flex;
         flex-direction: row;
@@ -238,5 +239,19 @@
         .calculated-group div {
             text-align: left;
             display: inline-block;
+        }
+    .time-to-travel {
+        position: absolute;
+        bottom: -100px;
+        right: 0;
+    }
+
+    .time-to-travel h1,
+    .time-to-travel h2 {
+        display: inline-block;
+    }
+
+        .time-to-travel h1 {
+        padding-right: 15px;
         }
 </style>

@@ -7,7 +7,7 @@
             <DisplayDataModal :dataArray="runningData" v-if="step2_viewResults" />
 
             <div v-if="step2_viewResults" class="green-running-img">
-
+                <!--<img src="'../../assets/img/DownArrow.png" class="down-arrow" />-->
             </div>
             <!--<img src="assets/img/filip-mroz-sgtxFOiBZmQ-unsplash.png" />-->
             <RandomMapLocation v-if="step2_viewResults" />

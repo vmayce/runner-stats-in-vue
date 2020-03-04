@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="map">
         <div id="mapid"></div>
     </div>
 </template>
@@ -77,7 +77,7 @@
                     longitude: -97.922211
                 }
 
-                const randomDist = Math.random(5000)  * 1609.34 // meters;
+                const randomDist = Math.random(5000) * 1609.34 // meters;
 
                 const R = this.distance * 1609.34 // meters
 
@@ -148,6 +148,10 @@
 
 
 <style scoped>
+    .map {
+        text-align: center;
+    }
+
     #mapid {
         height: 300px;
         width: 50%;
